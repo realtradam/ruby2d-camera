@@ -14,14 +14,13 @@ module Ruby2D
         temp_radius = @radius * Camera.zoom
         temp_x = (((@x - Ruby2D::Camera.x + radius) * Math.cos(angle)) - ((@y - Ruby2D::Camera.y + radius) * Math.sin(angle))) * Ruby2D::Camera.zoom + half_width
         temp_y = (((@x - Ruby2D::Camera.x + radius) * Math.sin(angle)) + ((@y - Ruby2D::Camera.y + radius) * Math.cos(angle))) * Ruby2D::Camera.zoom + half_height
-        Ruby2D::Circle.draw(x: temp_x, y: tempy,
+        Ruby2D::Circle.draw(x: temp_x, y: temp_y,
                             radius: temp_radius,
-                            sectors: @sectors,
+                            sectors: self.sectors,
                             color: [self.color.r, self.color.g, self.color.b, self.color.a])
-
       end
 
-      def initialize(otps= {})
+      def initialize(opts= {})
         super(opts)
         Ruby2D::Camera << self
         self.remove

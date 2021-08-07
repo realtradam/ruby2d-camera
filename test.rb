@@ -1,7 +1,7 @@
 require 'ruby2d'
 require 'ruby2d/camera'
 
-Camera::Circle.new
+Camera::Image.new('./assets/bricktexture.png')
 
 update do
   Camera.x = get(:mouse_x)
