@@ -1,7 +1,7 @@
 require 'ruby2d'
 require 'ruby2d/camera'
 
-Camera::Line.new
+Camera::Quad.new
 #Camera::Image.new('./assets/bricktexture.png')
 #@test = Image.new('./assets/bricktexture.png')
 #@test.remove

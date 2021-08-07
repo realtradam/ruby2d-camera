@@ -18,9 +18,12 @@ module Ruby2D
         Ruby2D::Triangle.draw(x1: temp_x1, y1: temp_y1,
                               x2: temp_x2, y2: temp_y2,
                               x3: temp_x3, y3: temp_y3,
-                              color: [[self.c1.r, self.c1.g, self.c1.b, self.c1.a],
-                                      [self.c2.r, self.c2.g, self.c2.b, self.c2.a],
-                                      [self.c3.r, self.c3.g, self.c3.b, self.c3.a]])
+                              color: [
+                                [self.c1.r, self.c1.g, self.c1.b, self.c1.a],
+                                [self.c2.r, self.c2.g, self.c2.b, self.c2.a],
+                                [self.c3.r, self.c3.g, self.c3.b, self.c3.a]
+                              ],
+                              z: self.z)
       end
 
       def initialize(opts= {})
