@@ -1,10 +1,11 @@
 require 'ruby2d'
 require 'ruby2d/camera'
 
-@tri = Ruby2D::Camera::Triangle.new
+Camera::Circle.new
 
 update do
-  Ruby2D::Camera.redraw
+  Camera.x = get(:mouse_x)
+  Camera.angle = get(:mouse_y)
 end
 
 show

@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require_relative "camera/version"
-require_relative "camera/triangle"
-
-#Dir[File.join(__dir__, 'camera', '*.rb')].sort.each { |file| require file }
+#require_relative "camera/version"
+#require_relative "camera/triangle"
+require 'ruby2d'
+Dir[File.join(__dir__, 'camera', '*.rb')].sort.each { |file| require file }
 
 # Handles rendering objects relative
 # to a camera location
 module Ruby2D
   module Camera
-    class <<self
 
+    class <<self
       private
       # Contains all objects that are tracked
       def objects
@@ -37,31 +37,6 @@ module Ruby2D
     # Adding objects so they are
     # tracked by the Camera
     def self.<<(item)
-=begin
-      case item
-      when Triangle
-        item.extend Camera::TriangleWrapped
-      when Square
-        item.extend Camera::SquareWrapped
-      when Rectangle
-        item.extend Camera::RectangleWrapped
-      when Quad
-        item.extend Camera::QuadWrapped
-      when Line
-        item.extend Camera::LineWrapped
-      when Circle
-        item.extend Camera::CircleWrapped
-      when Image
-        item.extend Camera::ImageWrapped
-      when Sprite
-        item.extend Camera::SpriteWrapped
-      when Text
-        item.extend Camera::TextWrapped
-      else
-        puts 'Warning: Non-standard Object added to Camera'
-        puts '  Object may not behave as expected'
-      end
-=end
       objects.push(item) unless objects.include?(item)
     end
 
@@ -71,20 +46,8 @@ module Ruby2D
 
     # Redraw all objects that
     # are tracked by the Camera
-    def self.redraw(auto_purge: false)
-      #if auto_purge
-      #  objects.each do |item|
-      #    if item.nil?
-      #      puts "Warning: Nil Object detected in Camera"
-      #      puts "  Nil Object removed"
-      #      objects.delete(obj)
-      #    else
-      #      item.redraw
-      #    end
-      #  end
-      #else
-        objects.each(&:_draw)
-      #end
+    def self._redraw(auto_purge: false)
+      objects.each(&:_draw)
     end
 
     # Variables changing Camera properties
@@ -127,6 +90,15 @@ module Ruby2D
     def self.angle=(angle)
       angle %= 360
       @angle = angle
+    end
+  end
+end
+
+module Ruby2D
+  class Window
+    def update(&aproc)
+      @update_proc = (aproc << proc { Ruby2D::Camera._redraw })
+      true
     end
   end
 end
