@@ -10,29 +10,26 @@ Window.set(icon: './assets/blobcoolthink.png',
            height: 720,
            background: 'blue')
 
-
 @player = Camera::Sprite.new('./assets/sprites/mainblob-128.png',
-                     x: 1920 / 1.1,
-                     y: 1080 / 1.1,
-                     width: 50,
-                     height: 50,
-                     clip_width: 128,
-                     loop: true,
-                     time: 1,
-                     z: 99,
-                     animations: {
-                       walk: 0...60,
-                       stand: 60...61
-                     })
+                             x: 1920 / 1.1,
+                             y: 1080 / 1.1,
+                             width: 50,
+                             height: 50,
+                             clip_width: 128,
+                             loop: true,
+                             time: 1,
+                             z: 99,
+                             animations: {
+                               walk: 0...60,
+                               stand: 60...61
+                             })
 @shadow = Camera::Image.new(
   'assets/blobshadow.png',
   width: 52,
   height: 10,
   z: 4
 )
-#Camera << @shadow
 @player.play animation: :walk, loop: true
-#Camera << @player
 
 # UI
 Rectangle.new(
@@ -84,8 +81,6 @@ Rectangle.new(
   z: 101
 )
 
-
-
 # How fast the player can move
 @speed = 5
 
@@ -100,42 +95,25 @@ Rectangle.new(
 @room = nil
 
 on :key do |event|
-  if event.key == 'w'
-    @player_movement_y -= @speed unless @scene_transition_into || @scene_transition_out
-  end
-  if event.key == 's'
-    @player_movement_y += @speed unless @scene_transition_into || @scene_transition_out
-  end
-  if event.key == 'd'
-    @player_movement_x += @speed unless @scene_transition_into || @scene_transition_out
-  end
-  if event.key == 'a'
-    @player_movement_x -= @speed unless @scene_transition_into || @scene_transition_out
-  end
-  if event.key == 'space'
-    @pressed_space = true unless @scene_transition_into || @scene_transition_out
-  end
-  if event.key == 'q'
-    Camera.angle += 1 unless @scene_transition_into || @scene_transition_out
-  end
-  if event.key == 'e'
-    Camera.angle -= 1 unless @scene_transition_into || @scene_transition_out
-  end
-  if event.key == 'r'
-    unless @scene_transition_into || @scene_transition_out || Camera.angle.zero?
-      if Camera.angle <= 180
-        if Camera.angle > 10
-          Camera.angle -= 10
-        else 
-          Camera.angle -=1
-        end
-      elsif
-        if Camera.angle < 350
-          Camera.angle += 10
-        else
-          Camera.angle += 1
-        end
-      end
+  @player_movement_y -= @speed if event.key == 'w' && !(@scene_transition_into || @scene_transition_out)
+  @player_movement_y += @speed if event.key == 's' && !(@scene_transition_into || @scene_transition_out)
+  @player_movement_x += @speed if event.key == 'd' && !(@scene_transition_into || @scene_transition_out)
+  @player_movement_x -= @speed if event.key == 'a' && !(@scene_transition_into || @scene_transition_out)
+  @pressed_space = true if event.key == 'space' && !(@scene_transition_into || @scene_transition_out)
+  Camera.angle += 1 if event.key == 'q' && !(@scene_transition_into || @scene_transition_out)
+  Camera.angle -= 1 if event.key == 'e' && !(@scene_transition_into || @scene_transition_out)
+  if event.key == 'r' && !(@scene_transition_into || @scene_transition_out || Camera.angle.zero?)
+    if Camera.angle <= 180
+      Camera.angle -= if Camera.angle > 10
+                        10
+                      else
+                        1
+                      end
+    elsif Camera.angle += if Camera.angle < 350
+                            10
+                          else
+                            1
+                          end
     end
   end
 end
@@ -162,7 +140,9 @@ update do
   end
 
   if !@scene_transition_into && !@scene_transition_out
-    Camera.zoom += ((-[Math.sqrt(((@player.x + (@player.width / 2) - Camera.x)**2) + ((@player.y + (@player.width / 2) - Camera.y)**2)), 350].min * 0.004) + 2 - Camera.zoom) * 0.25
+    Camera.zoom += ((-[
+      Math.sqrt(((@player.x + (@player.width / 2) - Camera.x)**2) + ((@player.y + (@player.width / 2) - Camera.y)**2)), 350
+    ].min * 0.004) + 2 - Camera.zoom) * 0.25
     Camera.x += (@player.x + (@player.width / 2) - Camera.x) * 0.025
     Camera.y += (@player.y + (@player.height / 2) - Camera.y) * 0.025
   elsif @scene_transition_into
@@ -181,7 +161,6 @@ update do
         @room = nil
         @indoors = false
       end
-      #Camera.remove @background
       @background.remove
       @background = nil
     end
@@ -203,9 +182,8 @@ update do
       x: 100, y: 100,
       z: -1
     )
-    #Camera << @background
   elsif @room.nil? && @indoors
-    @room = Room.new(750,300)
+    @room = Room.new(750, 300)
     @background = Camera::Rectangle.new(
       color: 'black',
       x: 0,
@@ -218,15 +196,13 @@ update do
   @shadow.x = @player.x - 2
   @shadow.y = @player.y + 42
 
-  #Camera.remove @house_text
   @house_text&.remove
-  if @indoors
-    @house_text = @room.visted_by?(@player)
-  else
-    @house_text = @house.visted_by?(@player)
-  end
+  @house_text = if @indoors
+                  @room.visted_by?(@player)
+                else
+                  @house.visted_by?(@player)
+                end
   unless @house_text.nil?
-    #Camera << @house_text
     @house_text.center = true
   end
   if !@house_text.nil? && @pressed_space && !@scene_transition_into && !@scene_transition_out
@@ -243,6 +219,5 @@ update do
   @player_movement_y = 0
   @pressed_space = false
 
-  #Camera.redraw
 end
 show

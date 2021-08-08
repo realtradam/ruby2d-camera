@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Ruby2D
   module Camera
     # Wraps existing variables as well as adding new methods
@@ -8,6 +9,7 @@ module Ruby2D
       # Use after changing variables
       def _draw
         return if @hide
+
         angle = Camera.angle * (Math::PI / 180)
         half_width = Window.width * 0.5
         half_height = Window.height * 0.5
@@ -22,26 +24,26 @@ module Ruby2D
         temp_height = height * Camera.zoom
         case @flip
         when :both
-          temp_x = temp_x + temp_height
-          temp_y = temp_y + temp_width
+          temp_x += temp_height
+          temp_y += temp_width
           temp_width = -temp_width
           temp_height = -temp_height
           puts 'both'
         when :horizontal
-          temp_y = temp_y + temp_width
+          temp_y += temp_width
           temp_height = -temp_height
         when :vertical
           temp_width = -temp_width
-          temp_x = temp_x + temp_height
+          temp_x += temp_height
         end
-        self.draw(x: temp_x, y: temp_y,
-                  width: temp_width,
-                  height: temp_height,
-                  rotate: temp_rotate)
-        self.update
+        draw(x: temp_x, y: temp_y,
+             width: temp_width,
+             height: temp_height,
+             rotate: temp_rotate)
+        update
       end
 
-      def initialize(path, opts= {})
+      def initialize(path, opts = {})
         super(path, opts)
         Ruby2D::Camera << self
         Window.remove(self)

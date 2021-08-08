@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-#require_relative "camera/version"
-#require_relative "camera/triangle"
+# require_relative "camera/version"
+# require_relative "camera/triangle"
 require 'ruby2d'
 Dir[File.join(__dir__, 'camera', '*.rb')].sort.each { |file| require file }
 
@@ -9,9 +9,9 @@ Dir[File.join(__dir__, 'camera', '*.rb')].sort.each { |file| require file }
 # to a camera location
 module Ruby2D
   module Camera
-
-    class <<self
+    class << self
       private
+
       # Contains all objects that are tracked
       def objects
         @objects ||= []
@@ -38,7 +38,7 @@ module Ruby2D
     # tracked by the Camera
     def self.<<(item)
       objects.push(item) unless objects.include?(item)
-      objects.sort_by! do |n| 
+      objects.sort_by! do |n|
         n.z
       end
     end

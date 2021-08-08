@@ -7,6 +7,7 @@ module Ruby2D
       # Use after changing variables
       def _draw
         return if @hide
+
         angle = Ruby2D::Camera.angle * (Math::PI / 180)
         half_width = Window.width * 0.5
         half_height = Window.height * 0.5
@@ -20,19 +21,20 @@ module Ruby2D
                               x2: temp_x2, y2: temp_y2,
                               x3: temp_x3, y3: temp_y3,
                               color: [
-                                [self.c1.r, self.c1.g, self.c1.b, self.c1.a],
-                                [self.c2.r, self.c2.g, self.c2.b, self.c2.a],
-                                [self.c3.r, self.c3.g, self.c3.b, self.c3.a]
+                                [c1.r, c1.g, c1.b, c1.a],
+                                [c2.r, c2.g, c2.b, c2.a],
+                                [c3.r, c3.g, c3.b, c3.a]
                               ],
-                              z: self.z)
+                              z: z)
       end
 
-      def initialize(opts= {})
+      def initialize(opts = {})
         super(opts)
         Ruby2D::Camera << self
         Window.remove(self)
-        self.add
+        add
       end
+
       def remove
         @hide = true
       end
@@ -41,23 +43,16 @@ module Ruby2D
         @hide = false
       end
 
-      #Methods for moving the shape
+      # Methods for moving the shape
       def x
         @x ||= 0
       end
 
-      def x=(x)
-        @x = x
-      end
+      attr_writer :x, :y
 
       def y
         @y ||= 0
       end
-
-      def y=(y)
-        @y = y
-      end
     end
   end
 end
-

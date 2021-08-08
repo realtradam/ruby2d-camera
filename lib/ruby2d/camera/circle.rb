@@ -9,6 +9,7 @@ module Ruby2D
       # Use after changing variables
       def _draw
         return if @hide
+
         angle = Camera.angle * (Math::PI / 180)
         half_width = Window.width * 0.5
         half_height = Window.height * 0.5
@@ -17,15 +18,16 @@ module Ruby2D
         temp_y = (((@x - Ruby2D::Camera.x + radius) * Math.sin(angle)) + ((@y - Ruby2D::Camera.y + radius) * Math.cos(angle))) * Ruby2D::Camera.zoom + half_height
         Ruby2D::Circle.draw(x: temp_x, y: temp_y,
                             radius: temp_radius,
-                            sectors: self.sectors,
-                            color: [self.color.r, self.color.g, self.color.b, self.color.a])
+                            sectors: sectors,
+                            color: [color.r, color.g, color.b, color.a])
       end
 
-      def initialize(opts= {})
+      def initialize(opts = {})
         super(opts)
         Ruby2D::Camera << self
         Window.remove(self)
       end
+
       def remove
         @hide = true
       end

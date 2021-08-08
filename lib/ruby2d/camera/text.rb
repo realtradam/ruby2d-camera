@@ -14,6 +14,7 @@ module Ruby2D
       # Use after changing variables
       def _draw
         return if @hide
+
         angle = Camera.angle * (Math::PI / 180)
         half_width = Window.width * 0.5
         half_height = Window.height * 0.5
@@ -31,19 +32,20 @@ module Ruby2D
         temp_rotate = rotate + Camera.angle
         # Workaround for resizing text
         # TODO: resizing doesnt work at all even with workaround
-        temp_size = size# * Camera.zoom
+        temp_size = size # * Camera.zoom
         self.size *= Camera.zoom
-        self.draw(x: temp_x, y: temp_y,
-                  rotate: temp_rotate,
-                  color: [self.color.r, self.color.g, self.color.b, self.color.a])
+        draw(x: temp_x, y: temp_y,
+             rotate: temp_rotate,
+             color: [color.r, color.g, color.b, color.a])
         self.size = temp_size
       end
 
-      def initialize(text, opts= {})
+      def initialize(text, opts = {})
         super(text, opts)
         Ruby2D::Camera << self
         Window.remove(self)
       end
+
       def remove
         @hide = true
       end
@@ -52,13 +54,7 @@ module Ruby2D
         @hide = false
       end
 
-      def center
-        @center
-      end
-
-      def center=(center)
-        @center = center
-      end
+      attr_accessor :center
     end
   end
 end
