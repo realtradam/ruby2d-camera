@@ -1,0 +1,39 @@
+![ruby2d-camera logo](https://naked.catgirls.rodeo/images/ruby2d-camera.png)
+
+[![MIT License](https://img.shields.io/github/license/realtradam/FelFlame?label=license&style=flat)](https://github.com/realtradam/FelFlame/blob/master/LICENSE)
+[![Ko-Fi](https://img.shields.io/static/v1?message=Buy%20me%20a%20coffee&logo=kofi&labelColor=ff5e5b&color=434B57&logoColor=white&label=%20)](https://ko-fi.com/tradam)
+
+# Ruby2D Camera Gem
+
+With this gem you can easily add camera functionality into your games built with Ruby2D. Install it using `gem install ruby2d-camera` and then add it into your project with `require ruby2d/camera` at the top of your code, just below the line `require ruby2d`.
+
+`ruby run.rb` to run the demo.
+
+## How to use the camera:
+
+Create your object as if you would create it in Ruby2D except you need to prefix it with `Camera::`. For example to create a square you do `Camera::Square.new`. Any objects you create this way can be controlled and manipulated the same way that you control and manipulate them in Ruby2D with a few small additions. Any objects that do not have an x/y variable to move it now do have this, so that you may move the objects in the camera. Text objects also have a boolean that you can change named `center` which allows you to set the origin to be the horizontal center of the text rather then the edge.
+
+### To manipulate the camera there are 4 variables:
+
+- `Camera.zoom` Default: 1. This is a multiplier for how much you want the camera to be zoomed in(e.g 2 is 2x zoom, 0.5 is 0.5x zoom)
+- `Camera.x` and `Camera.y` Default: 0. This is the position the camera is centered on in the "world"
+- `Camera.angle` Default: 0. This is the angle of how much the camera is rotated(in degrees). It ranges from 0-360. Giving values outside of this range will automagically convert them to fit within the 0-360 range.
+
+## How it works:
+
+A single `Camera` module exists which keeps track of objects created with it. When you create an object with the camera it creates a special object that inherits the original object from Ruby2D and then adds additional functions. The Camera module then uses these functions to draw the various objects on the screen each frame, using the parameters you gave it.
+
+## Demo:
+
+Under the `example` directory you can find a (poorly coded) demo using this gem. Simply `ruby run.rb` in the example directory to start the demo.
+
+### Controls:
+
+WASD to move character  
+Q/E to rotate camera  
+Hold R to reset the rotation  
+Space to enter doors
+
+## Known Issues:
+
+Unfortunately text cannot be resized due to current limitations of Ruby2D, this will fixed when possible. This means zooming with text will look strange, centering the text somewhat alleviates this issue.
