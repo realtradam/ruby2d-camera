@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'ruby2d'
-require_relative 'lib/camera/camera'
+#require_relative 'lib/camera/camera'
+require 'ruby2d/camera'
 require_relative 'house'
 require_relative 'room'
 
@@ -11,7 +12,7 @@ Window.set(icon: './assets/blobcoolthink.png',
            background: 'blue')
 
 
-@player = Sprite.new('./assets/sprites/mainblob-128.png',
+@player = Camera::Sprite.new('./assets/sprites/mainblob-128.png',
                      x: 1920 / 1.1,
                      y: 1080 / 1.1,
                      width: 50,
@@ -24,15 +25,15 @@ Window.set(icon: './assets/blobcoolthink.png',
                        walk: 0...60,
                        stand: 60...61
                      })
-@shadow = Image.new(
+@shadow = Camera::Image.new(
   'assets/blobshadow.png',
   width: 52,
   height: 10,
   z: 4
 )
-Camera << @shadow
+#Camera << @shadow
 @player.play animation: :walk, loop: true
-Camera << @player
+#Camera << @player
 
 # UI
 Rectangle.new(
@@ -181,7 +182,7 @@ update do
         @room = nil
         @indoors = false
       end
-      Camera.remove @background
+      #Camera.remove @background
       @background.remove
       @background = nil
     end
@@ -198,15 +199,15 @@ update do
 
   if @house.nil? && !@indoors
     @house = House.new(750, 300)
-    @background = Image.new(
+    @background = Camera::Image.new(
       'assets/background.png',
       x: 100, y: 100,
       z: -1
     )
-    Camera << @background
+    #Camera << @background
   elsif @room.nil? && @indoors
     @room = Room.new(750,300)
-    @background = Rectangle.new(
+    @background = Camera::Rectangle.new(
       color: 'black',
       x: 0,
       y: 0,
@@ -218,7 +219,7 @@ update do
   @shadow.x = @player.x - 2
   @shadow.y = @player.y + 42
 
-  Camera.remove @house_text
+  #Camera.remove @house_text
   @house_text&.remove
   if @indoors
     @house_text = @room.visted_by?(@player)
@@ -226,7 +227,7 @@ update do
     @house_text = @house.visted_by?(@player)
   end
   unless @house_text.nil?
-    Camera << @house_text
+    #Camera << @house_text
     @house_text.center = true
   end
   if !@house_text.nil? && @pressed_space && !@scene_transition_into && !@scene_transition_out
@@ -243,6 +244,6 @@ update do
   @player_movement_y = 0
   @pressed_space = false
 
-  Camera.redraw
+  #Camera.redraw
 end
 show

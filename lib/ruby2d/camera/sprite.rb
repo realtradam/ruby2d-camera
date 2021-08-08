@@ -7,41 +7,52 @@ module Ruby2D
       # Recalculates real coordiantes
       # Use after changing variables
       def _draw
+        return if @hide
         angle = Camera.angle * (Math::PI / 180)
         half_width = Window.width * 0.5
         half_height = Window.height * 0.5
-        offset_x = x + (width / 2)
-        offset_y = y + (height / 2)
-        temp_x = @flip_x = (((offset_x - Camera.x) * Math.cos(angle)) - ((offset_y - Camera.y) * Math.sin(angle))) \
+        offset_x = @x + (width / 2)
+        offset_y = @y + (height / 2)
+        temp_x = (((offset_x - Camera.x) * Math.cos(angle)) - ((offset_y - Camera.y) * Math.sin(angle))) \
           * Camera.zoom + half_width - (width * Camera.zoom / 2)
-        temp_y = @flip_y = (((offset_x - Camera.x) * Math.sin(angle)) + ((offset_y - Camera.y) * Math.cos(angle))) \
+        temp_y = (((offset_x - Camera.x) * Math.sin(angle)) + ((offset_y - Camera.y) * Math.cos(angle))) \
           * Camera.zoom + half_height - (height * Camera.zoom / 2)
         temp_rotate = rotate + Camera.angle
-        temp_width = @flip_width = width * Camera.zoom
-        temp_height = @flip_height = height * Camera.zoom
+        temp_width = width * Camera.zoom
+        temp_height = height * Camera.zoom
         case @flip
         when :both
-          @flip_x = @x + @height
-          @flip_width = -@width
-          @flip_y = @y + @width
-          @flip_height = -@height
+          temp_x = temp_x + temp_height
+          temp_y = temp_y + temp_width
+          temp_width = -temp_width
+          temp_height = -temp_height
+          puts 'both'
         when :horizontal
-          @flip_y = @y + @width
-          @flip_height = -@height
+          temp_y = temp_y + temp_width
+          temp_height = -temp_height
         when :vertical
-          @flip_x = @x + @height
-          @flip_width = -@width
+          temp_width = -temp_width
+          temp_x = temp_x + temp_height
         end
-        self.draw(x: temp_x, y: temp_x,
+        self.draw(x: temp_x, y: temp_y,
                   width: temp_width,
                   height: temp_height,
                   rotate: temp_rotate)
+        self.update
       end
 
       def initialize(path, opts= {})
         super(path, opts)
         Ruby2D::Camera << self
-        self.remove
+        Window.remove(self)
+      end
+
+      def remove
+        @hide = true
+      end
+
+      def add
+        @hide = false
       end
     end
   end

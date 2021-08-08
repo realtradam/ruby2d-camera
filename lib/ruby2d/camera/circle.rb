@@ -8,6 +8,7 @@ module Ruby2D
       # Recalculates real coordiantes
       # Use after changing variables
       def _draw
+        return if @hide
         angle = Camera.angle * (Math::PI / 180)
         half_width = Window.width * 0.5
         half_height = Window.height * 0.5
@@ -23,7 +24,14 @@ module Ruby2D
       def initialize(opts= {})
         super(opts)
         Ruby2D::Camera << self
-        self.remove
+        Window.remove(self)
+      end
+      def remove
+        @hide = true
+      end
+
+      def add
+        @hide = false
       end
     end
   end

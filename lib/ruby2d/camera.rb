@@ -38,6 +38,9 @@ module Ruby2D
     # tracked by the Camera
     def self.<<(item)
       objects.push(item) unless objects.include?(item)
+      objects.sort_by! do |n| 
+        n.z
+      end
     end
 
     def self.remove(item)

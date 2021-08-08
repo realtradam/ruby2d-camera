@@ -4,19 +4,11 @@ module Ruby2D
   module Camera
     # Wraps existing variables as well as adding new methods
     # so that it can be handled by the Camera Module
-    module Rectange < Ruby2D::Rectangle
-      # Rectangles are part of the exception where
-      # their x and y variables need to be reset
-      # when wrapped
-      #def self.extended(obj)
-      #  obj.instance_exec do
-      #    @x = 0
-      #    @y = 0
-      #  end
-      #end
+    class Rectangle < Ruby2D::Rectangle
       # Recalculates real coordiantes
       # Use after changing variables
-      def redraw
+      def _draw
+        return if @hide
         angle = Camera.angle * (Math::PI / 180)
         half_width = Window.width * 0.5
         half_height = Window.height * 0.5
@@ -28,12 +20,39 @@ module Ruby2D
         temp_y3 = (((x + x3 - Camera.x) * Math.sin(angle)) + ((y + y3 - Camera.y) * Math.cos(angle))) * Camera.zoom + half_height
         temp_x4 = (((x + x4 - Camera.x) * Math.cos(angle)) - ((y + y4 - Camera.y) * Math.sin(angle))) * Camera.zoom + half_width
         temp_y4 = (((x + x4 - Camera.x) * Math.sin(angle)) + ((y + y4 - Camera.y) * Math.cos(angle))) * Camera.zoom + half_height
+        Ruby2D::Quad.draw(x1: temp_x1, y1: temp_y1,
+                          x2: temp_x2, y2: temp_y2,
+                          x3: temp_x3, y3: temp_y3,
+                          x4: temp_x4, y4: temp_y4,
+                          color: [
+                            [self.c1.r, self.c1.g, self.c1.b, self.c1.a],
+                            [self.c2.r, self.c2.g, self.c2.b, self.c2.a],
+                            [self.c3.r, self.c3.g, self.c3.b, self.c3.a],
+                            [self.c4.r, self.c4.g, self.c4.b, self.c4.a]
+                          ],
+                          z: self.z
+                         )
       end
 
       def initialize(opts= {})
-        super(otps)
+        super(opts)
         Ruby2D::Camera << self
-        self.remove
+        Window.remove(self)
+        @x1 -= @x
+        @x2 -= @x
+        @x3 -= @x
+        @x4 -= @x
+        @y1 -= @y
+        @y2 -= @y
+        @y3 -= @y
+        @y4 -= @y
+      end
+      def remove
+        @hide = true
+      end
+
+      def add
+        @hide = false
       end
       #Methods for moving the shape
       def x
@@ -51,7 +70,6 @@ module Ruby2D
       def y=(y)
         @y = y
       end
-
     end
   end
 end
