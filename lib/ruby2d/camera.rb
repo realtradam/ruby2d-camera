@@ -94,6 +94,23 @@ module Ruby2D
       angle %= 360
       @angle = angle
     end
+
+    # Convert screenspace coordinates into worldspace camera ones
+    def self.coordinate_to_worldspace(x, y)
+      angle = Camera.angle * (Math::PI / 180)
+      half_width = Window.width * 0.5
+      half_height = Window.height * 0.5
+
+      [(((x - half_width) / zoom) * Math.cos(-angle)) - (((y - half_height) / zoom) * Math.sin(-angle)) + self.x,
+       (((x - half_width) / zoom) * Math.sin(-angle)) + (((y - half_height) / zoom) * Math.cos(-angle)) + self.y]
+    end
+
+    # Convert worldspace camera coordinates into screenspace ones
+    def self.coordinate_to_screenspace(x, y)
+      angle = Camera.angle * (Math::PI / 180)
+      [(((x - Camera.x) * Math.cos(angle)) - ((y - Camera.y) * Math.sin(angle))) * Camera.zoom + (Window.width * 0.5),
+       (((x - Camera.x) * Math.sin(angle)) + ((y - Camera.y) * Math.cos(angle))) * Camera.zoom + (Window.height * 0.5)]
+    end
   end
 end
 
