@@ -21,8 +21,8 @@ Create your object as if you would create it in Ruby2D except you need to prefix
 
 ### There are also 2 helpful functions:
 
-- `Camera.coordinate_to_worldspace(x,y)` You pass coordinates on the screen(for example where a player clicked in the window) and it will return the coordinates(in a 2d array) what the coordinates are in the world
-- `Camera.coordinate_to_screenspace(x,y)` You pass in a coordinate in the world(for example an enemy in your game) and it will give you the coordinates(in a 2d array) of where on the screen this character appears. Note this function may return values that are outside of the screen if the object is not in view of the camera
+- `Camera.coordinate_to_worldspace(x,y)` You pass in the coordinates on the screen(for example where a player clicked in the window) and it will return the coordinates(in an [x,y] array) what the coordinates are in the world
+- `Camera.coordinate_to_screenspace(x,y)` You pass in the coordinate in the world(for example an enemy in your game) and it will give you the coordinates(in an [x,y] array) of where on the screen this character appears. Note this function may return values that are outside of the screen if the object is not in view of the camera
 
 ## How it works:
 
