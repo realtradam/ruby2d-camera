@@ -16,6 +16,16 @@ module Ruby2D
       def objects
         @objects ||= []
       end
+
+    end
+
+    def self._sort_by_z
+      @sort_by_z = true
+    end
+
+    def self._resolve_z_sorting
+      objects.sort_by!(&:z) if @sort_by_z
+      @sort_by_z = false
     end
 
     def self.debug_x
@@ -37,9 +47,9 @@ module Ruby2D
     # Adding objects so they are
     # tracked by the Camera
     def self.<<(item)
-      objects.push(item) unless objects.include?(item)
-      objects.sort_by! do |n|
-        n.z
+      unless objects.include?(item)
+        objects.push(item)
+        self._sort_by_z
       end
     end
 
@@ -50,6 +60,7 @@ module Ruby2D
     # Redraw all objects that
     # are tracked by the Camera
     def self._redraw(auto_purge: false)
+      self._resolve_z_sorting
       objects.each(&:_draw)
     end
 

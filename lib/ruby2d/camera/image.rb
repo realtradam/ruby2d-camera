@@ -34,6 +34,11 @@ module Camera
       Window.remove(self)
     end
 
+    def z=(z)
+      super(z)
+      Ruby2D::Camera._sort_by_z
+    end
+
     def remove
       @hide = true
     end
