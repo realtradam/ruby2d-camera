@@ -44,14 +44,19 @@ module Ruby2D
       end
 
       # Methods for moving the shape
+      attr_writer :x, :y
+
       def x
         @x ||= 0
       end
 
-      attr_writer :x, :y
-
       def y
         @y ||= 0
+      end
+
+      def z=(z)
+        super(z)
+        Ruby2D::Camera._sort_by_z
       end
     end
   end

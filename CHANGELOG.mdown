@@ -6,6 +6,10 @@
 ![Deprecated](https://img.shields.io/badge/-Deprecated-orange)
 ![Removed](https://img.shields.io/badge/-Removed-red)
 
+## [1.1.1](https://github.com/realtradam/ruby2d-camera/releases/tag/1.1.1) - 2021-09-24
+![Fixed](https://img.shields.io/badge/-Fixed-blue)
+- Fixed changing z-index after the shape has been added not applying at all
+
 ## [1.1.0](https://github.com/realtradam/ruby2d-camera/releases/tag/1.1.0) - 2021-08-09
 ![Added](https://img.shields.io/badge/-Added-brightgreen)
 - Added Camera functions `Camera.coordinate_to_screenspace` and `Camera.coordinate_to_worldspace`
