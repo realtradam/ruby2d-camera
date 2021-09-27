@@ -28,7 +28,6 @@ module Ruby2D
           temp_y += temp_width
           temp_width = -temp_width
           temp_height = -temp_height
-          puts 'both'
         when :horizontal
           temp_y += temp_width
           temp_height = -temp_height
@@ -45,13 +44,13 @@ module Ruby2D
 
       def initialize(path, opts = {})
         super(path, opts)
-        Ruby2D::Camera << self
+        Camera << self
         Window.remove(self)
       end
 
       def z=(z)
         super(z)
-        Ruby2D::Camera._sort_by_z
+        Camera._sort_by_z
       end
 
       def remove

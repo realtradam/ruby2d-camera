@@ -14,8 +14,8 @@ module Ruby2D
         half_width = Window.width * 0.5
         half_height = Window.height * 0.5
         temp_radius = @radius * Camera.zoom
-        temp_x = (((@x - Ruby2D::Camera.x + radius) * Math.cos(angle)) - ((@y - Ruby2D::Camera.y + radius) * Math.sin(angle))) * Ruby2D::Camera.zoom + half_width
-        temp_y = (((@x - Ruby2D::Camera.x + radius) * Math.sin(angle)) + ((@y - Ruby2D::Camera.y + radius) * Math.cos(angle))) * Ruby2D::Camera.zoom + half_height
+        temp_x = (((@x - Camera.x + radius) * Math.cos(angle)) - ((@y - Camera.y + radius) * Math.sin(angle))) * Camera.zoom + half_width
+        temp_y = (((@x - Camera.x + radius) * Math.sin(angle)) + ((@y - Camera.y + radius) * Math.cos(angle))) * Camera.zoom + half_height
         Ruby2D::Circle.draw(x: temp_x, y: temp_y,
                             radius: temp_radius,
                             sectors: sectors,
@@ -24,13 +24,13 @@ module Ruby2D
 
       def initialize(opts = {})
         super(opts)
-        Ruby2D::Camera << self
+        Camera << self
         Window.remove(self)
       end
 
       def z=(z)
         super(z)
-        Ruby2D::Camera._sort_by_z
+        Camera._sort_by_z
       end
 
       def remove

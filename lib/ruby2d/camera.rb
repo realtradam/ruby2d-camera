@@ -16,7 +16,6 @@ module Ruby2D
       def objects
         @objects ||= []
       end
-
     end
 
     def self._sort_by_z

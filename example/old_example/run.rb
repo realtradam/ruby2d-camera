@@ -110,7 +110,7 @@ on :key do |event|
                         1
                       end
     elsif Camera.angle += if Camera.angle < 350
-                            10
+      10
                           else
                             1
                           end

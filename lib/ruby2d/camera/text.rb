@@ -16,11 +16,13 @@ module Ruby2D
         return if @hide
 
         angle = Camera.angle * (Math::PI / 180)
+        render_text.size = size * Camera.zoom
+        #puts render_text.width
         half_width = Window.width * 0.5
         half_height = Window.height * 0.5
         if center
-          offset_y = y + (Camera.zoom / 2)
-          offset_x = x + (Camera.zoom / 2)
+          offset_x = x + (width / Camera.zoom / 2) - (render_text.width / 2 / Camera.zoom)
+          offset_y = y + (height / Camera.zoom / 2) - (render_text.height / 2 / Camera.zoom)
         else
           offset_x = x + (width / Camera.zoom / 2)
           offset_y = y + (height / Camera.zoom / 2)
@@ -30,25 +32,29 @@ module Ruby2D
         temp_y = (((offset_x - Camera.x) * Math.sin(angle)) + ((offset_y - Camera.y) * Math.cos(angle))) \
           * Camera.zoom + half_height - (height / 2)
         temp_rotate = rotate + Camera.angle
-        # Workaround for resizing text
-        # TODO: resizing doesnt work at all even with workaround
-        temp_size = size # * Camera.zoom
-        self.size *= Camera.zoom
-        draw(x: temp_x, y: temp_y,
-             rotate: temp_rotate,
-             color: [color.r, color.g, color.b, color.a])
-        self.size = temp_size
+        render_text.draw(x: temp_x, y: temp_y,
+                         rotate: temp_rotate,
+                         color: [color.r, color.g, color.b, color.a])
       end
 
       def initialize(text, opts = {})
         super(text, opts)
-        Ruby2D::Camera << self
+        self.render_text = Ruby2D::Text.new(text, opts)
+        render_text.remove
+        self.center = opts[:center]
+        Camera << self
         Window.remove(self)
       end
 
       def z=(z)
         super(z)
-        Ruby2D::Camera._sort_by_z
+        render_text.z = z
+        Camera._sort_by_z
+      end
+
+      def text=(text)
+        super(text)
+        render_text.text = text
       end
 
       def remove
@@ -59,7 +65,7 @@ module Ruby2D
         @hide = false
       end
 
-      attr_accessor :center
+      attr_accessor :center, :render_text
     end
   end
 end

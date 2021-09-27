@@ -32,7 +32,7 @@ module Ruby2D
 
       def initialize(opts = {})
         super(opts)
-        Ruby2D::Camera << self
+        Camera << self
         Window.remove(self)
       end
 
@@ -57,7 +57,7 @@ module Ruby2D
 
       def z=(z)
         super(z)
-        Ruby2D::Camera._sort_by_z
+        Camera._sort_by_z
       end
     end
   end
