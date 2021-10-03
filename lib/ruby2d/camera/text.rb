@@ -16,16 +16,21 @@ module Ruby2D
         return if @hide
 
         angle = Camera.angle * (Math::PI / 180)
-        render_text.size = size * Camera.zoom
         #puts render_text.width
         half_width = Window.width * 0.5
         half_height = Window.height * 0.5
         if center
-          offset_x = x + (width / Camera.zoom / 2) - (render_text.width / 2 / Camera.zoom)
-          offset_y = y + (height / Camera.zoom / 2) - (render_text.height / 2 / Camera.zoom)
+          offset_y = y + (Camera.zoom / 2)
+          offset_x = x + (Camera.zoom / 2)
+          render_text.size = size
         else
-          offset_x = x + (width / Camera.zoom / 2)
-          offset_y = y + (height / Camera.zoom / 2)
+          # very broken
+          #offset_x = x + (width / Camera.zoom / 2)# - (render_text.width / 2 / Camera.zoom)
+          #offset_y = y + (height / Camera.zoom / 2)# - (render_text.height / 2 / Camera.zoom)
+          #render_text.size = size * Camera.zoom
+          offset_y = y + (Camera.zoom / 2)
+          offset_x = x + (Camera.zoom / 2)
+          render_text.size = size * Camera.zoom
         end
         temp_x = (((offset_x - Camera.x) * Math.cos(angle)) - ((offset_y - Camera.y) * Math.sin(angle))) \
           * Camera.zoom + half_width - (width / 2)
@@ -41,7 +46,11 @@ module Ruby2D
         super(text, opts)
         self.render_text = Ruby2D::Text.new(text, opts)
         render_text.remove
-        self.center = opts[:center]
+        if opts[:center].nil?
+          self.center = true
+        else
+          self.center = opts[:center]
+        end
         Camera << self
         Window.remove(self)
       end

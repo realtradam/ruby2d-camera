@@ -241,9 +241,13 @@ Window.set(width: 640,
                                        )
 
 @text = Camera::Text.new("Bigger circles should always be in front of smaller ones",
-                         size: 30,
+                         size: 15,
                          x: 0, y: 65)
 @text.center = true
+@text = Camera::Text.new("Bigger circles should always be in front of smaller ones",
+                         size: 15,
+                         x: 0, y: 65)
+@text.center = false
 
 @zindex_test = []
 
